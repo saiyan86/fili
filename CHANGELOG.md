@@ -52,15 +52,15 @@ Current
 
 ### Fixed:
 
+- [Log stack trace at error on unexpected DimensionServlet failures](https://github.com/yahoo/fili/pull/425)
+    * DimensionServlet was using debug to log unexpected exceptions and not printing the stack trace
+
 - [Fix availability testing utils to be compatible with composite tables](https://github.com/yahoo/fili/pull/419)
     * Fix availability testing utils `populatePhysicalTableCacheIntervals` to assign a `TestAvailability` that will serialize correctly instead of always `StrictAvailability`
     * Fix internal representation of `VolatileIntervalsFunction` in `DefaultingVolatileIntervalsService` from `Map<PhysicalTable, VolatileIntervalsFunction>` to `Map<String, VolatileIntervalsFunction>`
 
 - [Fix metric and dimension names for wikipedia-example](https://github.com/yahoo/fili/pull/415)
     * The metrics and dimensions configured in the `fili-wikipedia-example` were different from those in Druid and as a result the queries sent to Druid were incorrect
-
-- [Log stack trace at error on unexpected DimensionServlet failures]()
-    * DimensionServlet was using debug to log unexpected exceptions and not printing the stack trace
 
 ### Known Issues:
 
