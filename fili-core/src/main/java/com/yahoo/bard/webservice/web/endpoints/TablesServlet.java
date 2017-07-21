@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +52,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -255,6 +257,40 @@ public class TablesServlet extends EndpointServlet implements BardConfigResource
             return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
         }
     }
+
+    @GET
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{tableName}/{granularity}/{dimensions:.*}")
+    public void getTableAvailability(
+            @PathParam("tableName") String tableName,
+            @PathParam("granularity") String granularity,
+            @PathParam("dimensions") List<PathSegment> dimensions,
+            @QueryParam("metrics") String metrics,
+            @QueryParam("dateTime") String intervals,
+            @QueryParam("filters") String filters,
+            @Context UriInfo uriInfo,
+            @Context final ContainerRequestContext containerRequestContext
+    ) {
+        RequestLog.startTiming(this);
+        RequestLog.record(new TableRequest(tableName, granularity));
+
+        TablesApiRequest tablesApiRequest = new TablesApiRequest(
+                tableName,
+                granularity,
+                null,
+                "",
+                "",
+                uriInfo,
+                this,
+                dimensions,
+                metrics,
+                intervals,
+                filters,
+                null
+        );
+    }
+
 
     /**
      * Get all the tables full view.
